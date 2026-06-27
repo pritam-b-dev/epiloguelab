@@ -18,8 +18,8 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-6 bg-zinc-950">
-      <div className="w-full max-w-xl bg-zinc-900/50 backdrop-blur-2xl border border-zinc-800 rounded-3xl p-8 md:p-12 shadow-2xl shadow-blue-500/5">
+    <div className="flex-1 w-full max-w-2xl p-4 md:p-6">
+      <div className="w-full bg-zinc-900/50 backdrop-blur-2xl border border-zinc-800 rounded-3xl p-8 md:p-12 shadow-2xl shadow-primary/10">
         {/* Header Section */}
         <div className="mb-10 text-center">
           <h2 className="text-4xl font-extrabold text-white tracking-tight">
@@ -30,7 +30,7 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        <Form className="flex flex-col gap-6" onSubmit={onSubmit}>
+        <Form className="flex flex-col gap-6 w-full" onSubmit={onSubmit}>
           {/* Name Field */}
           <TextField isRequired name="fullName" type="text" className="w-full">
             <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
@@ -45,8 +45,8 @@ export default function SignUpPage() {
           </TextField>
 
           {/* Email & Photo URL */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <TextField isRequired name="email" type="email">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+            <TextField isRequired name="email" type="email" className="w-full">
               <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
                 Email Address
               </Label>
@@ -54,11 +54,11 @@ export default function SignUpPage() {
                 variant="bordered"
                 radius="md"
                 placeholder="john@example.com"
-                className="h-12"
+                className="h-12 w-full"
               />
             </TextField>
 
-            <TextField name="photoURL" type="url">
+            <TextField name="photoURL" type="url" className="w-full">
               <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
                 Photo URL (Optional)
               </Label>
@@ -66,27 +66,28 @@ export default function SignUpPage() {
                 variant="bordered"
                 radius="md"
                 placeholder="https://example.com/photo.jpg"
-                className="h-12"
+                className="h-12 w-full"
               />
             </TextField>
           </div>
 
           {/* Passwords */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             <TextField
               isRequired
               name="password"
               type={isVisible ? "text" : "password"}
+              className="w-full"
             >
               <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
                 Password
               </Label>
-              <div className="relative">
+              <div className="relative w-full">
                 <Input
                   variant="bordered"
                   radius="md"
                   placeholder="••••••••"
-                  className="h-12"
+                  className="h-12 w-full"
                 />
                 <button
                   type="button"
@@ -102,16 +103,17 @@ export default function SignUpPage() {
               isRequired
               name="confirmPassword"
               type={isVisible ? "text" : "password"}
+              className="w-full"
             >
               <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
                 Confirm Password
               </Label>
-              <div className="relative">
+              <div className="relative w-full">
                 <Input
                   variant="bordered"
                   radius="md"
                   placeholder="••••••••"
-                  className="h-12"
+                  className="h-12 w-full"
                 />
                 <button
                   type="button"
@@ -124,10 +126,9 @@ export default function SignUpPage() {
             </TextField>
           </div>
 
-          {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold h-14 text-lg transition-all shadow-lg shadow-blue-600/20 active:scale-[0.98]"
+            className="w-full mt-4 font-bold h-14 text-lg text-white bg-blue-600 hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20 active:scale-[0.98] rounded-xl cursor-pointer"
           >
             Create Account
           </Button>
@@ -142,10 +143,9 @@ export default function SignUpPage() {
           <div className="h-px flex-1 bg-zinc-800" />
         </div>
 
-        {/* Google Button */}
         <Button
           variant="bordered"
-          className="w-full border-zinc-700 text-zinc-300 h-12 hover:bg-zinc-800 transition-colors"
+          className="w-full border-zinc-700 bg-zinc-900 hover:bg-zinc-800/80 text-white h-12 transition-all font-semibold rounded-xl cursor-pointer shadow-sm"
           onPress={handleGoogleSignIn}
         >
           Sign up with Google
@@ -156,7 +156,7 @@ export default function SignUpPage() {
           Already have an account?{" "}
           <a
             href="/signin"
-            className="text-blue-500 font-semibold hover:underline"
+            className="text-blue-400 font-semibold hover:underline hover:text-blue-300"
           >
             Sign In
           </a>
