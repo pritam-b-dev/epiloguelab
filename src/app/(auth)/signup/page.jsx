@@ -1,65 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "react-hot-toast";
-import { signUp, signIn } from "@/lib/auth-client";
-import {
-  Button,
-  Form,
-  Input,
-  Label,
-  TextField,
-  FieldError,
-} from "@heroui/react";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
+import { Button, Form, Input, Label, TextField } from "@heroui/react";
 
 export default function SignUpPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/dashboard";
-
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
-
-    if (data.password !== data.confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
-
-    const { error } = await signUp.email({
-      email: data.email,
-      password: data.password,
-      name: data.fullName,
-      photoURL: data.photoURL || "",
-      role: "user",
-      isPremium: false,
-      autoSignIn: false,
-    });
-
-    if (error) {
-      toast.error(error.message);
-    } else {
-      toast.success("Account created successfully!");
-      router.push(redirectTo);
-    }
+    // Your submit logic
   };
 
   const handleGoogleSignIn = () => {
-    signIn.social({
-      provider: "google",
-      callbackURL: redirectTo,
-    });
+    // Google Sign in logic
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-6">
-      <div className="w-full max-w-xl bg-zinc-950/60 backdrop-blur-2xl border border-zinc-800 rounded-3xl p-10 shadow-2xl shadow-blue-500/10">
+    <div className="flex min-h-screen items-center justify-center p-6 bg-zinc-950">
+      <div className="w-full max-w-xl bg-zinc-900/50 backdrop-blur-2xl border border-zinc-800 rounded-3xl p-8 md:p-12 shadow-2xl shadow-blue-500/5">
+        {/* Header Section */}
         <div className="mb-10 text-center">
           <h2 className="text-4xl font-extrabold text-white tracking-tight">
             Create your account
@@ -71,19 +32,19 @@ export default function SignUpPage() {
 
         <Form className="flex flex-col gap-6" onSubmit={onSubmit}>
           {/* Name Field */}
-          <TextField isRequired name="fullName" type="text">
+          <TextField isRequired name="fullName" type="text" className="w-full">
             <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
               Full Name
             </Label>
             <Input
               variant="bordered"
               radius="md"
-              placeholder="e.g. John Doe"
-              className="h-12"
+              placeholder="John Doe"
+              className="h-12 w-full"
             />
           </TextField>
 
-          {/* Email & Photo URL in a nice layout */}
+          {/* Email & Photo URL */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <TextField isRequired name="email" type="email">
               <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
@@ -99,12 +60,12 @@ export default function SignUpPage() {
 
             <TextField name="photoURL" type="url">
               <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
-                Photo URL
+                Photo URL (Optional)
               </Label>
               <Input
                 variant="bordered"
                 radius="md"
-                placeholder="https://..."
+                placeholder="https://example.com/photo.jpg"
                 className="h-12"
               />
             </TextField>
@@ -130,7 +91,7 @@ export default function SignUpPage() {
                 <button
                   type="button"
                   onClick={toggleVisibility}
-                  className="absolute right-3 top-3 text-zinc-500 hover:text-white"
+                  className="absolute right-3 top-3.5 text-zinc-500 hover:text-white transition-colors"
                 >
                   {isVisible ? <EyeSlash size={20} /> : <Eye size={20} />}
                 </button>
@@ -155,7 +116,7 @@ export default function SignUpPage() {
                 <button
                   type="button"
                   onClick={toggleVisibility}
-                  className="absolute right-3 top-3 text-zinc-500 hover:text-white"
+                  className="absolute right-3 top-3.5 text-zinc-500 hover:text-white transition-colors"
                 >
                   {isVisible ? <EyeSlash size={20} /> : <Eye size={20} />}
                 </button>
@@ -163,31 +124,40 @@ export default function SignUpPage() {
             </TextField>
           </div>
 
+          {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold h-14 text-lg transition-all shadow-lg shadow-blue-600/20"
+            className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold h-14 text-lg transition-all shadow-lg shadow-blue-600/20 active:scale-[0.98]"
           >
             Create Account
           </Button>
         </Form>
 
-        <div className="my-6 flex items-center gap-2">
-          <div className="h-px w-full bg-zinc-800" />
-          <span className="text-xs text-zinc-500">OR</span>
-          <div className="h-px w-full bg-zinc-800" />
+        {/* Separator */}
+        <div className="my-8 flex items-center gap-4">
+          <div className="h-px flex-1 bg-zinc-800" />
+          <span className="text-xs font-medium text-zinc-500 uppercase tracking-widest">
+            Or continue with
+          </span>
+          <div className="h-px flex-1 bg-zinc-800" />
         </div>
 
+        {/* Google Button */}
         <Button
           variant="bordered"
-          className="w-full border-zinc-700 text-zinc-300"
+          className="w-full border-zinc-700 text-zinc-300 h-12 hover:bg-zinc-800 transition-colors"
           onPress={handleGoogleSignIn}
         >
           Sign up with Google
         </Button>
 
-        <p className="mt-6 text-center text-sm text-zinc-400">
+        {/* Footer Link */}
+        <p className="mt-8 text-center text-sm text-zinc-400">
           Already have an account?{" "}
-          <a href="/signin" className="text-blue-500 hover:underline">
+          <a
+            href="/signin"
+            className="text-blue-500 font-semibold hover:underline"
+          >
             Sign In
           </a>
         </p>
