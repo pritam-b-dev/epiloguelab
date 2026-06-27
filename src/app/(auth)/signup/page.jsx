@@ -145,12 +145,21 @@ export default function SignUpPage() {
               <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
                 Confirm Password
               </Label>
-              <Input
-                variant="bordered"
-                radius="md"
-                placeholder="••••••••"
-                className="h-12"
-              />
+              <div className="relative">
+                <Input
+                  variant="bordered"
+                  radius="md"
+                  placeholder="••••••••"
+                  className="h-12"
+                />
+                <button
+                  type="button"
+                  onClick={toggleVisibility}
+                  className="absolute right-3 top-3 text-zinc-500 hover:text-white"
+                >
+                  {isVisible ? <EyeSlash size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </TextField>
           </div>
 
