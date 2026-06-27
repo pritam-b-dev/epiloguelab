@@ -9,7 +9,6 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* নতুন ইন্ডিগো কালার এখানে যুক্ত করলাম */
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
 }
@@ -19,7 +18,6 @@
     --background: #ffffff;
     --foreground: #171717;
 
-    /* ইন্ডিগো (লাইট মোড) */
     --primary: #4f46e5;
     --primary-foreground: #ffffff;
   }
@@ -28,7 +26,6 @@
     --background: #0a0a0a;
     --foreground: #ededed;
 
-    /* ইন্ডিগো (ডার্ক মোড) */
     --primary: #6366f1;
     --primary-foreground: #ffffff;
   }
