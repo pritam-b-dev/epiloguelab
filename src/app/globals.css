@@ -1,11 +1,15 @@
 @import "tailwindcss";
 
-@theme {
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
 }
 
-/* HeroUI এবং dark mode সাপোর্ট করার জন্য */
 @layer base {
   :root {
     --background: #ffffff;

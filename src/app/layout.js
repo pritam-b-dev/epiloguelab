@@ -1,7 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { HeroUIProvider } from "@heroui/react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+
+import { Toaster } from "react-hot-toast";
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,11 +27,8 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <HeroUIProvider>
-          <NextThemesProvider attribute="class" defaultTheme="dark">
-            {children}
-          </NextThemesProvider>
-        </HeroUIProvider>
+        <Providers>{children}</Providers>
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );
