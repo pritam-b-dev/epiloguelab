@@ -17,17 +17,17 @@
   :root {
     --background: #ffffff;
     --foreground: #171717;
-
     --primary: #4f46e5;
     --primary-foreground: #ffffff;
+    --border: #3f3f46;
   }
 
   .dark {
     --background: #0a0a0a;
     --foreground: #ededed;
-
     --primary: #6366f1;
     --primary-foreground: #ffffff;
+    --border: #3f3f46;
   }
 }
 
