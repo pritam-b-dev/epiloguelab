@@ -169,7 +169,7 @@ export default function NavBar() {
               </Link>
               <Link
                 href="/signup"
-                className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-base font-semibold hover:bg-primary/90 transition-colors"
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-base font-semibold hover:bg-primary/70 transition-colors"
               >
                 Sign Up
               </Link>
