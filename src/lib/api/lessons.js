@@ -11,3 +11,7 @@ export const getMostSavedLessons = async () => {
 export const getLessons = async (queryString) => {
   return await serverFetch(`/api/lessons?${queryString}`);
 };
+
+export const getLessonById = async (id) => {
+  return await serverFetch(`/api/lessons/${id}`);
+};
