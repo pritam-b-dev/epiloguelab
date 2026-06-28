@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { toast } from "react-hot-toast";
 import { postComment } from "../../lib/actions/comments";
 
@@ -12,27 +11,28 @@ export default function CommentSection({ comments = [], lessonId, user }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!newText.trim()) return;
+    if (!newText.trim() || isPosting) return;
 
-    // Optimistic Update
+    const tempId = Date.now().toString();
     const optimisticComment = {
-      _id: Date.now().toString(),
+      _id: tempId,
       text: newText,
-      userName: user.name,
-      userPhoto: user.photoURL || "",
+      userName: user?.name || "Anonymous",
+      userPhoto: user?.photoURL || null,
       createdAt: new Date().toISOString(),
     };
 
-    setCommentsList([optimisticComment, ...commentsList]);
+    setCommentsList((prev) => [optimisticComment, ...prev]);
     setNewText("");
     setIsPosting(true);
 
     try {
       await postComment({ lessonId, text: newText });
+      toast.success("Comment posted successfully");
     } catch (error) {
       toast.error("Failed to post comment");
-      // Rollback
-      setCommentsList(commentsList);
+
+      setCommentsList((prev) => prev.filter((c) => c._id !== tempId));
     } finally {
       setIsPosting(false);
     }

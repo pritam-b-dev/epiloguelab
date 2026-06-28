@@ -30,6 +30,7 @@ export async function protectedFetch(path) {
 }
 
 export async function serverMutation(path, data, method = "POST") {
+  console.log("Fetching to:", `${baseUrl}${path}`);
   const auth = await authHeader();
   const res = await fetch(`${baseUrl}${path}`, {
     method,

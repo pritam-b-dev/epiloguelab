@@ -1,18 +1,30 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import { getLessonById } from "../../../../lib/api/lessons";
+import { getMyFavorites } from "../../../../lib/api/favorites";
+import LessonClientWrapper from "../../../../components/lessons/LessonClientWrapper";
+import { getComments } from "../../../../lib/api/comments";
 import { getUserSession } from "../../../../lib/core/session";
+import { getLessonById } from "../../../../lib/api/lessons";
 
 export default async function LessonPage({ params }) {
   const { id } = await params;
 
-  const user = await getUserSession();
-
-  if (!user) redirect(`/signin?redirect=/lessons/${id}`);
-
-  const lesson = await getLessonById(id);
+  const [user, lesson] = await Promise.all([
+    getUserSession(),
+    getLessonById(id),
+  ]);
 
   if (!lesson) notFound();
+  if (!user) redirect(`/signin?redirect=/lessons/${id}`);
+
+  const [comments, favoritesRaw] = await Promise.all([
+    getComments(id).catch(() => []),
+    user ? getMyFavorites(user.id).catch(() => []) : [],
+  ]);
+
+  const favoritesList = Array.isArray(favoritesRaw) ? favoritesRaw : [];
+  const isFavorited = favoritesList.some((f) => f.lessonId === id);
+  const isLiked = lesson.likes?.includes(user?.id || "");
 
   const readingTime =
     Math.ceil((lesson.description?.split(" ").length || 0) / 200) + " min read";
@@ -51,85 +63,15 @@ export default async function LessonPage({ params }) {
     );
   }
 
-  // Normal Layout
+  // Normal Layout (পাস করে দিচ্ছি Client Wrapper-এ)
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Header Card */}
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 rounded-2xl">
-            <div className="flex items-center gap-2 text-sm text-zinc-500 mb-4">
-              <span>{lesson.creatorName}</span>
-              <span>•</span>
-              <span>{new Date(lesson.createdAt).toLocaleDateString()}</span>
-            </div>
-
-            <h1 className="text-3xl font-bold mb-4">{lesson.title}</h1>
-
-            <div className="flex gap-2 mb-6">
-              <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium">
-                {lesson.category}
-              </span>
-              <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium">
-                {lesson.emotionalTone}
-              </span>
-            </div>
-
-            {lesson.image && (
-              <img
-                src={lesson.image}
-                alt={lesson.title}
-                className="w-full h-64 object-cover rounded-xl mb-6"
-              />
-            )}
-
-            <div className="whitespace-pre-line text-zinc-700 dark:text-zinc-300">
-              {lesson.description}
-            </div>
-          </div>
-
-          {/* Placeholders for Client Components */}
-          <div id="ACTIONS_PLACEHOLDER">
-            {/* <LessonActions lesson={lesson} user={user} /> */}
-          </div>
-          <div id="COMMENTS_PLACEHOLDER">
-            {/* <CommentSection lessonId={lesson._id} /> */}
-          </div>
-        </div>
-
-        {/* Right Sidebar */}
-        <aside className="space-y-6">
-          {/* Overview Card */}
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 rounded-2xl">
-            <h3 className="font-bold mb-4">Overview</h3>
-            <div className="space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
-              <p>📅 {new Date(lesson.createdAt).toLocaleDateString()}</p>
-              <p>🎭 Tone: {lesson.emotionalTone}</p>
-              <p>📂 Category: {lesson.category}</p>
-              <p>⏱️ {readingTime}</p>
-              <p>❤️ {lesson.likesCount} Likes</p>
-              <p>👁️ Visibility: {lesson.visibility}</p>
-            </div>
-          </div>
-
-          {/* Author Card */}
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 rounded-2xl text-center">
-            <img
-              src={lesson.creatorPhoto || "/default-avatar.png"}
-              alt={lesson.creatorName}
-              className="w-16 h-16 rounded-full mx-auto mb-4"
-            />
-            <h4 className="font-bold">{lesson.creatorName}</h4>
-            <Link
-              href={`/profile/${lesson.creatorId}`}
-              className="text-primary text-sm mt-2 block hover:underline"
-            >
-              View all by this author
-            </Link>
-          </div>
-        </aside>
-      </div>
-    </div>
+    <LessonClientWrapper
+      lesson={lesson}
+      user={user}
+      comments={comments}
+      isFavorited={isFavorited}
+      isLiked={isLiked}
+      readingTime={readingTime}
+    />
   );
 }
