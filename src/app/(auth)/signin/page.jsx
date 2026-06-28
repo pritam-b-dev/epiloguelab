@@ -81,6 +81,7 @@ export default function SignInPage() {
         </div>
 
         <Form className="flex flex-col gap-6 w-full" onSubmit={onSubmit}>
+          {/* Email Input */}
           <TextField isRequired className="w-full" isInvalid={!!errors.email}>
             <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
               Email Address
@@ -88,10 +89,8 @@ export default function SignInPage() {
             <Input
               name="email"
               type="email"
-              variant="bordered"
-              radius="md"
               placeholder="name@example.com"
-              className="h-12 w-full"
+              className="h-14 w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 text-white focus:border-blue-500 focus:outline-none focus:ring-0 transition-all"
             />
             {errors.email && (
               <FieldError className="mt-1 text-sm text-red-500">
@@ -100,6 +99,7 @@ export default function SignInPage() {
             )}
           </TextField>
 
+          {/* Password Input */}
           <TextField
             isRequired
             className="w-full"
@@ -112,15 +112,13 @@ export default function SignInPage() {
               <Input
                 name="password"
                 type={isVisible ? "text" : "password"}
-                variant="bordered"
-                radius="md"
                 placeholder="••••••••"
-                className="h-12 w-full"
+                className="h-14 w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 text-white focus:border-blue-500 focus:outline-none focus:ring-0 transition-all"
               />
               <button
                 type="button"
                 onClick={() => setIsVisible(!isVisible)}
-                className="absolute right-3 top-3.5 text-zinc-500 hover:text-white transition-colors z-10"
+                className="absolute right-4 top-4 text-zinc-500 hover:text-white transition-colors z-10"
               >
                 {isVisible ? <EyeSlash size={20} /> : <Eye size={20} />}
               </button>
@@ -151,13 +149,12 @@ export default function SignInPage() {
 
         <Button
           variant="bordered"
-          className="w-full border-zinc-700 bg-zinc-900 hover:bg-zinc-800/80 text-white h-12 transition-all font-semibold rounded-xl cursor-pointer shadow-sm"
+          className="w-full border-zinc-700 bg-zinc-900 hover:bg-zinc-800/80 text-white h-14 transition-all font-semibold rounded-xl cursor-pointer shadow-sm"
           onPress={handleGoogleSignIn}
         >
           Sign in with Google
         </Button>
 
-        {/* Footer Link */}
         <p className="mt-8 text-center text-sm text-zinc-400">
           Don't have an account?{" "}
           <a

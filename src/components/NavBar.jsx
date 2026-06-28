@@ -23,11 +23,11 @@ export default function NavBar() {
         </Link>
 
         {/* Center Links */}
-        <ul className="hidden md:flex gap-6">
+        <ul className="hidden md:flex gap-8">
           <li>
             <Link
               href="/"
-              className="text-zinc-500 hover:text-primary transition-colors text-sm"
+              className="text-zinc-300 hover:text-primary transition-colors text-base font-medium"
             >
               Home
             </Link>
@@ -35,7 +35,7 @@ export default function NavBar() {
           <li>
             <Link
               href="/lessons"
-              className="text-zinc-500 hover:text-primary transition-colors text-sm"
+              className="text-zinc-300 hover:text-primary transition-colors text-base font-medium"
             >
               Lessons
             </Link>
@@ -45,7 +45,7 @@ export default function NavBar() {
               <li>
                 <Link
                   href="/dashboard/add-lesson"
-                  className="text-zinc-500 hover:text-primary transition-colors text-sm"
+                  className="text-zinc-300 hover:text-primary transition-colors text-base font-medium"
                 >
                   Add Lesson
                 </Link>
@@ -53,7 +53,7 @@ export default function NavBar() {
               <li>
                 <Link
                   href="/dashboard/my-lessons"
-                  className="text-zinc-500 hover:text-primary transition-colors text-sm"
+                  className="text-zinc-300 hover:text-primary transition-colors text-base font-medium"
                 >
                   My Lessons
                 </Link>
@@ -105,7 +105,7 @@ export default function NavBar() {
 
                 <Dropdown.Popover className="min-w-[220px] mt-2 rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl overflow-hidden p-1">
                   <Dropdown.Menu
-                    className="gap-0.5"
+                    className="gap-0.5 outline-none"
                     onAction={(key) => {
                       if (key === "logout") handleLogout();
                       else if (key === "dashboard")
@@ -121,9 +121,9 @@ export default function NavBar() {
                     <Dropdown.Item
                       id="user-info"
                       textValue="User Info"
-                      className="cursor-default py-3 px-4 hover:bg-transparent"
+                      className="py-3 px-4 hover:bg-transparent focus:ring-0 focus-visible:outline-none"
                     >
-                      <Label className="font-bold text-white block">
+                      <Label className="font-bold text-foreground block">
                         {user.name}
                       </Label>
                       <div className="text-xs text-zinc-500 truncate">
@@ -134,26 +134,26 @@ export default function NavBar() {
                     <Dropdown.Item
                       id="dashboard"
                       textValue="Dashboard"
-                      className="py-2.5 px-4 rounded-lg hover:bg-zinc-800/50 transition-colors"
+                      className="py-2.5 px-4 rounded-lg hover:bg-zinc-800/50 transition-colors focus:ring-0 focus-visible:outline-none"
                     >
-                      <Label>Dashboard</Label>
+                      <Label className="text-foreground">Dashboard</Label>
                     </Dropdown.Item>
 
                     <Dropdown.Item
                       id="profile"
                       textValue="Profile"
-                      className="py-2.5 px-4 rounded-lg hover:bg-zinc-800/50 transition-colors"
+                      className="py-2.5 px-4 rounded-lg hover:bg-zinc-800/50 transition-colors focus:ring-0 focus-visible:outline-none"
                     >
-                      <Label>Profile</Label>
+                      <Label className="text-foreground">Profile</Label>
                     </Dropdown.Item>
 
                     <Dropdown.Item
                       id="logout"
                       textValue="Logout"
                       variant="danger"
-                      className="py-2.5 px-4 rounded-lg text-danger hover:bg-red-500/10 transition-colors"
+                      className="py-2.5 px-4 rounded-lg text-danger hover:bg-red-500/10 transition-colors focus:ring-0 focus-visible:outline-none"
                     >
-                      <Label>Logout</Label>
+                      <Label className="text-danger">Logout</Label>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown.Popover>
@@ -163,13 +163,13 @@ export default function NavBar() {
             <div className="flex gap-2">
               <Link
                 href="/signin"
-                className="text-zinc-300 text-sm px-3 py-2 hover:text-primary transition-colors"
+                className="text-zinc-300 text-base px-3 py-2 hover:text-primary transition-colors"
               >
                 Login
               </Link>
               <Link
                 href="/signup"
-                className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors"
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-base font-semibold hover:bg-primary/90 transition-colors"
               >
                 Sign Up
               </Link>
