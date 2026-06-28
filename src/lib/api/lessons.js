@@ -7,3 +7,7 @@ export const getFeaturedLessons = async () => {
 export const getMostSavedLessons = async () => {
   return await serverFetch("/api/most-saved");
 };
+
+export const getLessons = async (queryString) => {
+  return await serverFetch(`/api/lessons?${queryString}`);
+};
