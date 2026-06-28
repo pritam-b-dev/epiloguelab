@@ -36,16 +36,8 @@ export default function HeroBanner() {
     return () => clearInterval(timer);
   }, []);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
-
   return (
-    <div className="relative w-full h-[500px] flex items-center justify-center overflow-hidden bg-zinc-950">
+    <div className="relative w-full h-[500px] flex items-center justify-center overflow-hidden bg-background">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
@@ -55,7 +47,7 @@ export default function HeroBanner() {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
         >
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight max-w-3xl">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-6 tracking-tight max-w-3xl">
             {slides[currentSlide].title}
           </h1>
           <p className="text-lg md:text-xl text-zinc-400 mb-8 max-w-2xl">
@@ -63,7 +55,7 @@ export default function HeroBanner() {
           </p>
           <Link
             href={slides[currentSlide].link}
-            className="px-8 py-3.5 bg-primary hover:bg-primary/70 text-white font-semibold rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-blue-600/20"
+            className="px-8 py-3.5 bg-primary hover:opacity-90 text-primary-foreground font-semibold rounded-xl transition-all active:scale-[0.98] shadow-lg"
           >
             {slides[currentSlide].buttonText}
           </Link>
@@ -71,15 +63,19 @@ export default function HeroBanner() {
       </AnimatePresence>
 
       <button
-        onClick={prevSlide}
-        className="absolute left-4 md:left-8 p-2 rounded-full bg-zinc-900/50 backdrop-blur-md border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all"
+        onClick={() =>
+          setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
+        }
+        className="absolute left-4 md:left-8 p-2 rounded-full bg-zinc-900/50 backdrop-blur-md border border-border text-zinc-400 hover:text-white transition-all"
       >
         <ChevronLeft size={24} />
       </button>
 
       <button
-        onClick={nextSlide}
-        className="absolute right-4 md:right-8 p-2 rounded-full bg-zinc-900/50 backdrop-blur-md border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all"
+        onClick={() =>
+          setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
+        }
+        className="absolute right-4 md:right-8 p-2 rounded-full bg-zinc-900/50 backdrop-blur-md border border-border text-zinc-400 hover:text-white transition-all"
       >
         <ChevronRight size={24} />
       </button>
