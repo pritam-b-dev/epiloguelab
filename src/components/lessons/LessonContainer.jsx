@@ -14,7 +14,6 @@ export default function LessonContainer({
 }) {
   const router = useRouter();
 
-  // State
   const [filters, setFilters] = useState({
     search: searchQuery.search || "",
     category: searchQuery.category || "all",
@@ -23,13 +22,23 @@ export default function LessonContainer({
   });
   const [page, setPage] = useState(parseInt(searchQuery.page) || 1);
 
-  // Pagination Math
   const itemsPerPage = 6;
-  const totalPages = Math.ceil(total / itemsPerPage);
+  const totalPages = Math.max(1, Math.ceil(total / itemsPerPage));
   const startItem = total > 0 ? (page - 1) * itemsPerPage + 1 : 0;
   const endItem = Math.min(page * itemsPerPage, total);
 
-  // URL Sync
+  const getPageNumbers = () => {
+    const pages = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1, 2, 3);
+      pages.push("ellipsis");
+      pages.push(totalPages);
+    }
+    return pages;
+  };
+
   useEffect(() => {
     const sp = new URLSearchParams();
     if (filters.search) sp.set("search", filters.search);
@@ -44,7 +53,6 @@ export default function LessonContainer({
 
   return (
     <div className="w-full">
-      {/* Filter Bar */}
       <LessonFilterBar
         initialValues={filters}
         onFilterChange={(f) => {
@@ -53,7 +61,6 @@ export default function LessonContainer({
         }}
       />
 
-      {/* Grid Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {lessons.length > 0 ? (
           lessons.map((lesson) => (
@@ -70,26 +77,58 @@ export default function LessonContainer({
         )}
       </div>
 
-      {/* Pagination Footer */}
       {total > 0 && (
-        <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-zinc-500">
+        <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4 w-full">
+          <p className="text-xs text-zinc-500 whitespace-nowrap">
             Showing {startItem}-{endItem} of {total} results
           </p>
 
-          <Pagination
-            total={totalPages}
-            page={page}
-            onChange={setPage}
-            variant="flat"
-            color="primary"
-          >
-            <Pagination.Previous isDisabled={page === 1} />
-            <Pagination.Content>
-              <Pagination.Item />
-              <Pagination.Ellipsis />
+          <Pagination className="w-auto">
+            <Pagination.Content className="flex items-center gap-2">
+              <Pagination.Item>
+                <Pagination.Previous
+                  isDisabled={page === 1}
+                  onPress={() => setPage((p) => Math.max(1, p - 1))}
+                  className="flex items-center gap-1 cursor-pointer px-3 py-1 rounded-md"
+                >
+                  <Pagination.PreviousIcon />
+                  <span>Previous</span>
+                </Pagination.Previous>
+              </Pagination.Item>
+
+              {getPageNumbers().map((p, i) =>
+                p === "ellipsis" ? (
+                  <Pagination.Item key={`ellipsis-${i}`}>
+                    <Pagination.Ellipsis />
+                  </Pagination.Item>
+                ) : (
+                  <Pagination.Item key={p}>
+                    <Pagination.Link
+                      isActive={p === page}
+                      onPress={() => setPage(p)}
+                      className={`w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200 ${
+                        p === page
+                          ? "bg-primary text-white font-bold"
+                          : "hover:bg-zinc-100 text-zinc-700"
+                      }`}
+                    >
+                      {p}
+                    </Pagination.Link>
+                  </Pagination.Item>
+                ),
+              )}
+
+              <Pagination.Item>
+                <Pagination.Next
+                  isDisabled={page === totalPages}
+                  onPress={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  className="flex items-center gap-1 cursor-pointer px-3 py-1 rounded-md"
+                >
+                  <span>Next</span>
+                  <Pagination.NextIcon />
+                </Pagination.Next>
+              </Pagination.Item>
             </Pagination.Content>
-            <Pagination.Next isDisabled={page === totalPages} />
           </Pagination>
         </div>
       )}

@@ -47,7 +47,11 @@ export default function LessonCard({ lesson, currentUser }) {
               {lesson.creatorName}
             </span>
             <span className="text-[10px] text-zinc-500">
-              {new Date(lesson.createdAt).toLocaleDateString()}
+              {new Date(lesson.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
             </span>
           </div>
         </div>
