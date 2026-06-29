@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   House,
   Persons,
@@ -13,8 +13,10 @@ import {
   ArrowRightFromSquare,
   ChevronsUp,
 } from "@gravity-ui/icons";
+import { authClient } from "../../lib/auth-client";
 
 export default function DashboardSidebar({ user }) {
+  const router = useRouter();
   const pathname = usePathname();
   const { role, isPremium, name, photoURL } = user || {};
 
@@ -54,9 +56,9 @@ export default function DashboardSidebar({ user }) {
 
   const navItems = role === "admin" ? adminNavLinks : userNavLinks;
 
-  const handleLogout = () => {
-    // signOut()
-    console.log("Logged out");
+  const handleLogout = async () => {
+    await authClient.signOut();
+    router.push("/signin");
   };
 
   return (
@@ -64,9 +66,12 @@ export default function DashboardSidebar({ user }) {
       {/* Top Section: Logo & User Card */}
       <div className="flex flex-col gap-6">
         {/* Logo */}
-        <div className="text-indigo-400 font-bold text-xl tracking-wider">
+        <Link
+          href={"/"}
+          className="text-indigo-400 font-bold text-xl tracking-wider"
+        >
           EpilogueLab
-        </div>
+        </Link>
 
         {/* User Card */}
         <div className="flex items-center gap-3 bg-zinc-900/40 p-3 rounded-xl border border-zinc-800/30">
@@ -134,9 +139,8 @@ export default function DashboardSidebar({ user }) {
 
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-400 hover:bg-red-500/10 rounded-xl transition-all w-full text-left"
+          className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-400 hover:bg-red-500/10 rounded-xl transition-all w-full text-left cursor-pointer"
         >
-          <ArrowRightFromSquare className="w-4 h-4" />
           Logout
         </button>
       </div>
