@@ -15,12 +15,12 @@ export default async function DashboardLayout({ children }) {
       <NavBar />
       <div className="flex min-h-screen bg-[#0a0a0a]">
         {/* Left Sidebar (Fixed width) */}
-        <aside className="w-64 fixed inset-y-0 left-0 z-50">
+        <aside className="  left-0 ">
           <DashboardSidebar user={user} />
         </aside>
 
         {/* Right Content Area */}
-        <main className="flex-1 ml-64 p-8 text-white">{children}</main>
+        <main className="flex-1  p-8 text-white">{children}</main>
       </div>
     </>
   );

@@ -62,7 +62,7 @@ export default function DashboardSidebar({ user }) {
   };
 
   return (
-    <div className="bg-[#0f0f11] border-r border-zinc-800/50 w-64 h-screen max-h-screen p-6 flex flex-col justify-between overflow-hidden select-none">
+    <div className="bg-[#0f0f11] border-r border-zinc-800/50 w-64 h-screen max-h-screen p-6 flex flex-col justify-between overflow-hidden select-none ">
       {/* Top Section */}
       <div className="flex flex-col gap-6 overflow-hidden flex-1">
         {/* Logo */}
