@@ -46,7 +46,7 @@ export default function AdminLessonsTable({ initialLessons = [] }) {
       success: () =>
         `Lesson is now ${isNowFeatured ? "Featured" : "Unfeatured"}!`,
       error: () => {
-        setLessons(previousLessons); // ফেইল করলে আগের স্টেটে ফেরত
+        setLessons(previousLessons);
         return "Failed to update featured status";
       },
     });

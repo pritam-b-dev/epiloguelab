@@ -9,7 +9,14 @@ export const toggleLike = async (id) => {
 };
 
 export async function createLesson(data) {
-  return await serverMutation("/api/lessons", data);
+  const res = await serverMutation("/api/lessons", data);
+  if (res) {
+    revalidatePath("/");
+    revalidatePath("/lessons");
+    revalidatePath("/dashboard/my-lessons");
+  }
+
+  return res;
 }
 
 export async function updateLesson(id, data) {
