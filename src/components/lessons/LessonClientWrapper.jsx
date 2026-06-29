@@ -31,7 +31,10 @@ export default function LessonClientWrapper({
             <div className="flex items-center gap-2 text-sm text-zinc-500 mb-4">
               <span>{lesson.creatorName}</span>
               <span>•</span>
-              <span className="text-[10px] text-zinc-500">
+              <span
+                className="text-[10px] text-zinc-500"
+                suppressHydrationWarning={true}
+              >
                 {new Date(lesson.createdAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "2-digit",

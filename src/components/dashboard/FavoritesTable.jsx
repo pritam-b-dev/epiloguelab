@@ -150,9 +150,16 @@ export default function FavoritesTable({ favorites = [], currentUser }) {
                       </Table.Cell>
 
                       {/* Saved Date */}
-                      <Table.Cell className="p-4 text-zinc-400 text-sm">
+                      <Table.Cell
+                        className="p-4 text-zinc-400 text-sm"
+                        suppressHydrationWarning={true}
+                      >
                         {fav.savedAt
-                          ? new Date(fav.savedAt).toLocaleDateString()
+                          ? new Date(fav.savedAt).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })
                           : "N/A"}
                       </Table.Cell>
 

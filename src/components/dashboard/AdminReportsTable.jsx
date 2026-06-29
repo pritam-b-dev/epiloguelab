@@ -161,7 +161,10 @@ export default function AdminReportsTable({ initialReports = [] }) {
                   >
                     {report.reporterEmail || "Anonymous User"}
                   </span>
-                  <span className="text-[11px] text-zinc-500 whitespace-nowrap shrink-0">
+                  <span
+                    className="text-[11px] text-zinc-500 whitespace-nowrap shrink-0 "
+                    suppressHydrationWarning={true}
+                  >
                     {report.timestamp
                       ? new Date(report.timestamp).toLocaleDateString()
                       : "N/A"}

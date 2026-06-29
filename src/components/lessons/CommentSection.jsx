@@ -92,7 +92,11 @@ export default function CommentSection({ comments = [], lessonId, user }) {
                     {comment.userName}
                   </span>
                   <span className="text-xs text-zinc-500">
-                    {new Date(comment.createdAt).toLocaleDateString()}
+                    {new Date(comment.createdAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
                   </span>
                 </div>
                 <p className="text-zinc-300 text-sm mt-1">{comment.text}</p>
