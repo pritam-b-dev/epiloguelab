@@ -117,7 +117,6 @@ function SignUpForm() {
           )}
         </TextField>
 
-        {/* Password Input */}
         <TextField isRequired className="w-full" isInvalid={!!errors.password}>
           <Label className="text-sm font-semibold text-zinc-300 mb-2 block">
             Password
