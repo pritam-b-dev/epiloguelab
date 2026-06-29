@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-import { authHeader } from "../../../lib/core/server";
 import { authClient } from "../../../lib/auth-client";
+import { createCheckoutSession } from "../../../lib/actions/payment";
 
 export default function PricingPage() {
   const { data: session } = authClient.useSession();
@@ -31,17 +30,19 @@ export default function PricingPage() {
 
     setLoading(true);
     try {
-      const auth = await authHeader();
-      const res = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...auth,
-        },
+      const res = await createCheckoutSession({
+        userId: user.id || user._id,
+        email: user.email,
       });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
+
+      if (res && res.url) {
+        window.location.href = res.url;
+      } else {
+        console.error(
+          "Session Creation Error:",
+          res?.message || res?.error || "Failed",
+        );
+        alert("Error: " + (res?.message || "Could not start payment process"));
       }
     } catch (error) {
       console.error("Checkout error:", error);
@@ -62,7 +63,6 @@ export default function PricingPage() {
         </div>
 
         {user?.isPremium ? (
-          /* Premium Status */
           <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-8 max-w-md mx-auto text-center">
             <h2 className="text-amber-400 text-2xl font-bold">
               You are already Premium! ⭐
@@ -78,7 +78,6 @@ export default function PricingPage() {
             </button>
           </div>
         ) : (
-          /* Pricing Table & Card */
           <>
             <div className="bg-[#121212] border border-zinc-800 rounded-2xl overflow-hidden mb-8">
               <table className="w-full text-left border-collapse">
