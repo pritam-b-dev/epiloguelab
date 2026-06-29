@@ -1,4 +1,4 @@
-import { serverFetch } from "../core/server";
+import { protectedFetch, serverFetch } from "../core/server";
 
 export const getFeaturedLessons = async () => {
   return await serverFetch("/api/featured-lessons");
@@ -15,3 +15,5 @@ export const getLessons = async (queryString) => {
 export const getLessonById = async (id) => {
   return await serverFetch(`/api/lessons/${id}`);
 };
+
+export const getMyLessons = () => protectedFetch("/api/my/lessons");
