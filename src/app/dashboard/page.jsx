@@ -148,7 +148,8 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="text-center py-8 border border-dashed border-zinc-800 rounded-2xl text-zinc-500 text-sm">
-            No lessons found. Click "+ Add New Lesson" to get started!
+            No lessons found. Click `&quot;`+ Add New Lesson`&quot;` to get
+            started!
           </div>
         )}
       </div>
