@@ -19,3 +19,6 @@ export const getLessonById = async (id) => {
 export const getMyLessons = async () => {
   return protectedFetch("/api/my/lessons");
 };
+
+export const getAdminAllLessons = (query = "") =>
+  protectedFetch(`/api/lessons/admin?${query}`);

@@ -31,3 +31,13 @@ export async function updateVisibility(id, visibility) {
     "PATCH",
   );
 }
+
+export async function toggleFeature(id) {
+  const result = await serverMutation(
+    `/api/lessons/${id}/feature`,
+    {},
+    "PATCH",
+  );
+  revalidatePath("/dashboard/admin/lessons");
+  return result;
+}
