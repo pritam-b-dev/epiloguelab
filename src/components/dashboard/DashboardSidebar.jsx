@@ -44,7 +44,6 @@ export default function DashboardSidebar({ user }) {
     { icon: Person, href: "/dashboard/profile", label: "Profile" },
   ];
 
-  // Premium না হলে "Upgrade" লিঙ্কটি পুশ করা
   if (!isPremium && role !== "admin") {
     userNavLinks.push({
       icon: ChevronsUp,
@@ -55,7 +54,6 @@ export default function DashboardSidebar({ user }) {
 
   const navItems = role === "admin" ? adminNavLinks : userNavLinks;
 
-  // ফেক সাইন আউট ফাংশন (আপনার ফেভারিট অথ প্যাকেজ অনুযায়ী কল করবেন)
   const handleLogout = () => {
     // signOut()
     console.log("Logged out");
@@ -67,7 +65,7 @@ export default function DashboardSidebar({ user }) {
       <div className="flex flex-col gap-6">
         {/* Logo */}
         <div className="text-indigo-400 font-bold text-xl tracking-wider">
-          DLL
+          EpilogueLab
         </div>
 
         {/* User Card */}
