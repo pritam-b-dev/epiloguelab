@@ -4,9 +4,7 @@ import { getAdminAllLessons } from "../../../../lib/api/lessons";
 export default async function AdminLessonsPage() {
   const lessonsData = await getAdminAllLessons();
 
-  const lessons = Array.isArray(lessonsData)
-    ? lessonsData
-    : lessonsData?.lessons || lessonsData?.data || [];
+  const lessons = Array.isArray(lessonsData) ? lessonsData : [];
 
   return (
     <div className="max-w-5xl mx-auto px-2 py-4">

@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Table, Button } from "@heroui/react";
 import { Star, Eye, TrashBin } from "@gravity-ui/icons";
-import { deleteLesson, toggleFeature } from "../../lib/actions/lessons";
+
 import toast from "react-hot-toast";
+import { deleteLesson, toggleFeature } from "../../lib/actions/lessons";
 
 export default function AdminLessonsTable({ initialLessons = [] }) {
   const [lessons, setLessons] = useState(initialLessons);
@@ -76,9 +76,12 @@ export default function AdminLessonsTable({ initialLessons = [] }) {
   const filteredLessons = lessons.filter((lesson) => {
     const matchesCategory =
       categoryFilter === "All" || lesson.category === categoryFilter;
+
     const matchesVisibility =
       visibilityFilter === "All" ||
-      lesson.visibility?.toLowerCase() === visibilityFilter.toLowerCase();
+      lesson.visibility?.trim().toLowerCase() ===
+        visibilityFilter.trim().toLowerCase();
+
     return matchesCategory && matchesVisibility;
   });
 
@@ -132,149 +135,142 @@ export default function AdminLessonsTable({ initialLessons = [] }) {
         </div>
       ) : (
         <div className="w-full bg-[#121212] border border-zinc-800 rounded-2xl overflow-hidden">
-          <Table.ScrollContainer>
-            <Table
-              aria-label="Admin lessons management table"
-              className="w-full"
-            >
-              <Table.Content>
-                <Table.Header>
-                  <Table.Column className="bg-zinc-900 text-zinc-400 font-medium p-4 text-left">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-zinc-900 border-b border-zinc-800">
+                  <th className="text-zinc-400 font-medium p-4 text-sm">
                     LESSON
-                  </Table.Column>
-                  <Table.Column className="bg-zinc-900 text-zinc-400 font-medium p-4 text-left">
+                  </th>
+                  <th className="text-zinc-400 font-medium p-4 text-sm">
                     CREATOR
-                  </Table.Column>
-                  <Table.Column className="bg-zinc-900 text-zinc-400 font-medium p-4 text-left">
+                  </th>
+                  <th className="text-zinc-400 font-medium p-4 text-sm">
                     CATEGORY
-                  </Table.Column>
-                  <Table.Column className="bg-zinc-900 text-zinc-400 font-medium p-4 text-left">
+                  </th>
+                  <th className="text-zinc-400 font-medium p-4 text-sm">
                     VISIBILITY
-                  </Table.Column>
-                  <Table.Column className="bg-zinc-900 text-zinc-400 font-medium p-4 text-left">
+                  </th>
+                  <th className="text-zinc-400 font-medium p-4 text-sm">
                     ACCESS
-                  </Table.Column>
-                  <Table.Column className="bg-zinc-900 text-zinc-400 font-medium p-4 text-left">
+                  </th>
+                  <th className="text-zinc-400 font-medium p-4 text-sm">
                     FEATURED
-                  </Table.Column>
-                  <Table.Column className="bg-zinc-900 text-zinc-400 font-medium p-4 text-right">
+                  </th>
+                  <th className="text-zinc-400 font-medium p-4 text-sm text-right">
                     ACTIONS
-                  </Table.Column>
-                </Table.Header>
-
-                <Table.Body>
-                  {filteredLessons.map((lesson) => (
-                    <Table.Row
-                      key={lesson._id}
-                      className="border-b border-zinc-800/60 hover:bg-zinc-900/30 transition-all"
-                    >
-                      {/* Lesson Title & Date */}
-                      <Table.Cell className="p-4 max-w-xs">
-                        <div className="flex flex-col min-w-0">
-                          <span
-                            className="text-sm font-medium text-white truncate"
-                            title={lesson.title}
-                          >
-                            {lesson.title}
-                          </span>
-                          <span className="text-[11px] text-zinc-500 mt-0.5">
-                            {formatDate(lesson.createdAt)}
-                          </span>
-                        </div>
-                      </Table.Cell>
-
-                      {/* Creator */}
-                      <Table.Cell className="p-4 text-zinc-400 text-sm truncate max-w-[120px]">
-                        {lesson.creatorName || "Unknown"}
-                      </Table.Cell>
-
-                      {/* Category Badge */}
-                      <Table.Cell className="p-4">
-                        <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-medium border border-indigo-500/10">
-                          {lesson.category}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredLessons.map((lesson) => (
+                  <tr
+                    key={lesson._id}
+                    className="border-b border-zinc-800/60 hover:bg-zinc-900/30 transition-all"
+                  >
+                    {/* Title */}
+                    <td className="p-4 max-w-xs">
+                      <div className="flex flex-col min-w-0">
+                        <span
+                          className="text-sm font-medium text-white truncate"
+                          title={lesson.title}
+                        >
+                          {lesson.title}
                         </span>
-                      </Table.Cell>
+                        <span className="text-[11px] text-zinc-500 mt-0.5">
+                          {formatDate(lesson.createdAt)}
+                        </span>
+                      </div>
+                    </td>
 
-                      {/* Visibility Badge */}
-                      <Table.Cell className="p-4">
-                        {lesson.visibility?.toLowerCase() === "public" ? (
-                          <span className="px-2 py-0.5 text-xs font-semibold bg-green-500/10 text-green-400 rounded-md border border-green-500/20">
-                            Public
-                          </span>
-                        ) : (
-                          <span className="px-2 py-0.5 text-xs font-semibold bg-zinc-800 text-zinc-400 rounded-md border border-zinc-700/50">
-                            Private
-                          </span>
-                        )}
-                      </Table.Cell>
+                    {/* Creator */}
+                    <td className="p-4 text-zinc-400 text-sm truncate max-w-[120px]">
+                      {lesson.creatorName || "Unknown"}
+                    </td>
 
-                      {/* Access Level Badge */}
-                      <Table.Cell className="p-4">
-                        {lesson.accessLevel === "Premium" ? (
-                          <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold border border-amber-500/20">
-                            ⭐ Premium
-                          </span>
-                        ) : (
-                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/20">
-                            Free
-                          </span>
-                        )}
-                      </Table.Cell>
+                    {/* Category */}
+                    <td className="p-4">
+                      <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-medium border border-indigo-500/10">
+                        {lesson.category}
+                      </span>
+                    </td>
 
-                      {/* Featured Indicator */}
-                      <Table.Cell className="p-4 text-sm font-medium">
-                        {lesson.isFeatured ? (
-                          <span className="text-amber-400">⭐ Yes</span>
-                        ) : (
-                          <span className="text-zinc-600">—</span>
-                        )}
-                      </Table.Cell>
+                    {/* Visibility */}
+                    <td className="p-4">
+                      {lesson.visibility?.toLowerCase() === "public" ? (
+                        <span className="px-2 py-0.5 text-xs font-semibold bg-green-500/10 text-green-400 rounded-md border border-green-500/20">
+                          Public
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 text-xs font-semibold bg-zinc-800 text-zinc-400 rounded-md border border-zinc-700/50">
+                          Private
+                        </span>
+                      )}
+                    </td>
 
-                      {/* Action Buttons */}
-                      <Table.Cell className="p-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          {/* Feature Toggle Button */}
-                          <button
-                            onClick={() => handleFeatureToggle(lesson._id)}
-                            className={`p-2 rounded-xl transition-all border ${
-                              lesson.isFeatured
-                                ? "bg-amber-500/10 text-amber-400 border-amber-500/20 hover:bg-amber-500/20"
-                                : "text-zinc-400 border-transparent hover:bg-zinc-800 hover:text-white"
-                            }`}
-                            title={
-                              lesson.isFeatured
-                                ? "Unfeature Lesson"
-                                : "Feature Lesson"
-                            }
-                          >
-                            <Star className="w-4 h-4" />
-                          </button>
+                    {/* Access Level */}
+                    <td className="p-4">
+                      {lesson.accessLevel === "Premium" ? (
+                        <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold border border-amber-500/20">
+                          ⭐ Premium
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/20">
+                          Free
+                        </span>
+                      )}
+                    </td>
 
-                          {/* View Button */}
-                          <Link
-                            href={`/lessons/${lesson._id}`}
-                            className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-xl transition-all border border-transparent"
-                            title="View Lesson"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Link>
+                    {/* Featured */}
+                    <td className="p-4 text-sm font-medium">
+                      {lesson.isFeatured ? (
+                        <span className="text-amber-400">⭐ Yes</span>
+                      ) : (
+                        <span className="text-zinc-600">—</span>
+                      )}
+                    </td>
 
-                          {/* Delete Button */}
-                          <button
-                            onClick={() => handleDelete(lesson._id)}
-                            className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all border border-transparent"
-                            title="Delete Permanently"
-                          >
-                            <TrashBin className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table.Content>
-            </Table>
-          </Table.ScrollContainer>
+                    {/* Actions */}
+                    <td className="p-4 text-right">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          onClick={() => handleFeatureToggle(lesson._id)}
+                          className={`p-2 rounded-xl transition-all border cursor-pointer ${
+                            lesson.isFeatured
+                              ? "bg-amber-500/10 text-amber-400 border-amber-500/20 hover:bg-amber-500/20"
+                              : "text-zinc-400 border-transparent hover:bg-zinc-800 hover:text-white"
+                          }`}
+                          title={
+                            lesson.isFeatured
+                              ? "Unfeature Lesson"
+                              : "Feature Lesson"
+                          }
+                        >
+                          <Star className="w-4 h-4" />
+                        </button>
+
+                        <Link
+                          href={`/lessons/${lesson._id}`}
+                          className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-xl transition-all border border-transparent"
+                          title="View Lesson"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </Link>
+
+                        <button
+                          onClick={() => handleDelete(lesson._id)}
+                          className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all border border-transparent cursor-pointer"
+                          title="Delete Permanently"
+                        >
+                          <TrashBin className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

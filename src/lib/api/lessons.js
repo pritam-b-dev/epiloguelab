@@ -21,4 +21,4 @@ export const getMyLessons = async () => {
 };
 
 export const getAdminAllLessons = (query = "") =>
-  protectedFetch(`/api/lessons/admin?${query}`);
+  protectedFetch(`/api/admin/lessons`);
