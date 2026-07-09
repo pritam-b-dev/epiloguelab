@@ -1,66 +1,154 @@
-# Epilogue Lab 🛡️
+# 📖 Epilogue Lab — Digital Life Lessons
 
-## Purpose
+A full-stack platform where people preserve, share, and learn from real life experiences. Turn personal wisdom into timeless lessons that inspire others.
 
-Epilogue Lab is a dedicated platform designed to capture, organize, and preserve meaningful life lessons, personal growth insights, and gathered wisdom over time. It fosters mindful reflection by allowing users to document their experiences, track learning progress, and explore a shared repository of public community wisdom to inspire lifelong growth.
+## 🌐 Live URL
 
----
-
-## Live URL
-
-🔗 **Production:** [https://epilogue-lab.example.com](https://epilogue-lab.example.com) _(Placeholder)_ 🔗 **Staging/Demo:** [https://staging.epilogue-lab.example.com](https://staging.epilogue-lab.example.com) _(Placeholder)_
+🔗 [https://epiloguelab.vercel.app](https://epiloguelab.vercel.app)
 
 ---
 
-## Admin Credentials
+## 🔐 Admin Credentials
 
-For testing and evaluation of administrative functionalities:
-
-- **Email:** `admin@admin.com` _(Placeholder)_
-- **Password:** `Admin123` _(Placeholder)_
-
----
-
-## Key Features
-
-- **Personal Wisdom Vault:** Create, update, and manage private or public life lessons.
-- **Dynamic Discovery Feed:** Browse, search, and filter public insights shared by the global community.
-- **Curated Favorites:** Bookmark and curate a personalized library of highly impactful lessons.
-- **Multi-Attribute Classification:** Categorize insights by domain (e.g., Mindset, Career, Mistakes) and Emotional Tone.
-- **Robust Admin Dashboard:** Platform statistics overview, full user management, lesson monitoring, and content moderation.
-- **Report & Moderation Queue:** Community reporting system for flagged content with action summaries (Ignore/Delete).
-- **Premium Membership Tier:** Stripe-powered monetization allowing premium access control for exclusive content.
-- **Fluid User Experience:** Elegant asynchronous states, optimistic UI updates, and smooth, micro-interactive feedback.
+| Field    | Value                  |
+|----------|------------------------|
+| Email    | admin@admin.com  |
+| Password | Admin123              |
 
 ---
 
-## Tech Stack
+## ✨ Key Features
 
-- **Frontend Framework:** Next.js 15 (App Router, Server Actions, Dynamic Routing)
-- **Backend Framework:** Express.js (RESTful API Architecture)
-- **Database:** MongoDB via Mongoose (Data Persistence & Schema Validation)
-- **Authentication:** BetterAuth (Secure Session Management & Role-Based Access Control)
-- **UI Components:** HeroUI v3 (Tailwind-native design elements)
-- **Styling:** Tailwind CSS (Utility-first dark theme implementation)
-- **Animations:** Framer Motion (Fluid transitions and feedback animations)
-- **Payment Gateway:** Stripe (Subscription management and secure checkout hooks)
+### For Everyone
+- 🔍 Browse public life lessons with search, filter, sort, and pagination
+- 🎭 Filter by category (Career, Mindset, Relationships, etc.) and emotional tone
+- 🏠 Dynamic home page with featured lessons, top contributors, and most saved
+
+### For Registered Users
+- ✍️ Create and publish life lessons (title, description, category, tone, visibility)
+- 🔒 Set lessons as Public or Private
+- 💾 Save favorite lessons and manage them from dashboard
+- ❤️ Like lessons with real-time count update
+- 💬 Comment on lessons with optimistic UI
+- 🚩 Report inappropriate content
+- 📊 Personal dashboard with stats and recent activity
+- 👤 Profile page with edit functionality
+
+### For Premium Members ⭐
+- 🌟 Create Premium-only lessons (hidden from free users)
+- 🔓 Access all Premium lessons from other creators
+- 🏷️ Premium badge on profile and cards
+
+### For Admins 🛡️
+- 📋 Manage all users — view, promote to admin
+- 📚 Manage all lessons — feature/unfeature, delete
+- 🚩 Review reported lessons — delete or ignore
+- 📈 Platform stats dashboard (users, lessons, reports, premium users)
+
+### Payments
+- 💳 Stripe-powered monthly subscription for Premium access
+- ✅ Automatic `isPremium` update on successful payment
+- 🎉 Payment success page with confirmation
+
+### Auth
+- 📧 Email & password authentication (BetterAuth)
+- 🔑 Google OAuth login
+- 🛡️ Role-based protected routes (user / admin)
+- 🔄 Redirect after login support
 
 ---
 
-## NPM Packages
+## 🛠️ Tech Stack
 
-### Client-Side Packages (`package.json`)
+### Frontend
+| Package | Purpose |
+|---|---|
+| Next.js 15 | App Router, Server Components |
+| HeroUI v3 | UI component library |
+| Tailwind CSS | Styling |
+| Framer Motion | Animations |
+| BetterAuth | Authentication client |
+| Stripe.js | Payment integration |
+| react-hot-toast | Toast notifications |
+| @gravity-ui/icons | Icon library |
 
-```json
-{
-  "dependencies": {
-    "@heroui/react": "^3.0.0",
-    "@gravity-ui/icons": "^2.x.x",
-    "framer-motion": "^11.x.x",
-    "sonner": "^1.x.x",
-    "clsx": "^2.x.x",
-    "tailwind-merge": "^2.x.x",
-    "better-auth": "^1.x.x"
-  }
-}
+### Backend
+| Package | Purpose |
+|---|---|
+| Express.js | REST API server |
+| MongoDB | Database |
+| BetterAuth | Auth adapter |
+| Stripe | Payment processing |
+| dotenv | Environment variables |
+| cors | Cross-origin requests |
+
+---
+
+
+
+## 🌐 Environment Variables
+
+### Frontend `.env.local`
 ```
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=https://epiloguelab.vercel.app
+MONGODB_URI=
+NEXT_PUBLIC_BASE_URL=https://your-backend.onrender.com
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+STRIPE_SECRET_KEY=
+```
+
+### Backend `.env`
+```
+MONGODB_URI=
+PORT=5000
+STRIPE_SECRET_KEY=
+STRIPE_PRICE_ID=
+CLIENT_URL=https://epiloguelab.vercel.app
+```
+
+---
+
+## 🚀 Getting Started
+
+### Frontend
+```bash
+cd epiloguelab
+npm install
+npm run dev
+```
+
+### Backend
+```bash
+cd epiloguelab-server
+npm install
+node index.js
+```
+
+---
+
+## 🔒 Auth Architecture
+
+- BetterAuth handles session via MongoDB `session` collection
+- Custom `verifyToken` middleware reads Bearer token from headers
+- `requireRole(role)` utility protects dashboard routes server-side
+- `protectedFetch()` and `serverMutation()` auto-attach auth headers
+
+---
+
+## 💳 Payment Flow
+
+```
+User clicks "Upgrade" → POST /api/create-checkout-session
+→ Stripe hosted checkout page
+→ Payment success → /pricing/success?session_id=...
+→ stripe.checkout.sessions.retrieve() → verify payment
+→ POST /api/payment-success → isPremium: true in MongoDB
+```
+
+---
+
+## 📄 License
+
+This project was built as an educational assignment. All rights reserved © Epilogue Lab.
